@@ -9,7 +9,7 @@ export const dbConnection = async() =>{
             mongoose.disconnect();
         })
         mongoose.connection.on('connecting', () =>{
-            console.log('Mongo DB | Trying connect');
+            console.log('Mongo DB | Trying to connect');
         })
         mongoose.connection.on('connected', () =>{
             console.log('Mongo DB | Connected to Mongo DB');
@@ -25,7 +25,8 @@ export const dbConnection = async() =>{
         })
         mongoose.connect(process.env.URI_MONGO,{
             serverSelectionTimeoutMS: 5000,
-            maxPoolSize:50
+            maxPoolSize:50,
+            heartbeatFrequencyMS: 200
         } );
     }  catch(error){
         console.log('Database connection failes', error);
