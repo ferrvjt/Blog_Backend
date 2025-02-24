@@ -12,13 +12,9 @@ export const register = async(req, res) => {
         
         const user = await Usuario.create({
             name: data.name,
-            surname: data.surname,
             username: data.username,
             email: data.email,
-            
-            phone: data.phone,
             password: encryptedPassword,
-            role: data.role,
             profilePicture
         })
 
@@ -47,7 +43,7 @@ export const login = async(req, res) => {
         const lowerUsername= username ? username.toLowerCase(): null;
 
         const user = await Usuario.findOne({
-            $or: [{email: lowerEmail}, {username: lowerUsername}]
+            $or: [{username: lowerUsername },{email: lowerEmail}]
         });
         if(!user){
             return res.status(400).json({
@@ -55,7 +51,7 @@ export const login = async(req, res) => {
             });
         }   
 
-        if(!user.estado){
+        if(!user.status){
             return  res.status(400).json({
                 msg: 'El usuario no existe en la base de datos'
             });
@@ -98,25 +94,21 @@ export const updatePassword = async (req, res) => {
         const lowerEmail = email ? email.toLowerCase() : null;
         const lowerUsername = username ? username.toLowerCase() : null;
 
-        console.log("BP1");
-
         // Buscar el usuario por email o username
         const user = await Usuario.findOne({
             $or: [{ email: lowerEmail }, { username: lowerUsername }]
         });
-        console.log("BP2");
+
 
         if (!user) {
             return res.status(404).json({
                 msg: 'No se encontró al usuario'
             });
         }
-        console.log("BP3");
+
 
         // Verificar la contraseña anterior
         const validPassword = await verify(user.password, oldPassword);
-        console.log("BP4");
-
         if (!validPassword) {
             return res.status(400).json({
                 msg: 'La contraseña es incorrecta'
@@ -129,10 +121,8 @@ export const updatePassword = async (req, res) => {
                 msg: 'La nueva contraseña es requerida.'
             });
         }
-
         // Hacer el hash de la nueva contraseña
         const hashPassword = await hash(password);
-        console.log("BP5");
 
         // Actualizar el usuario con la nueva contraseña
         const updatedUser = await Usuario.findByIdAndUpdate(id, {

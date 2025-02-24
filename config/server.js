@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import {dbConnection} from './mongo.js';
 import limiter from '../src/middleware/validar-cant-peticiones.js';
 import authRoutes from '../src/auth/auth.routes.js';
+import userRoutes from '../src/user/user.routes.js'
 
 const middlewares = (app)=>{
     app.use(express.urlencoded({extended:false}));
@@ -18,7 +19,8 @@ const middlewares = (app)=>{
 }
 
 const routes = (app) =>{
-    app.use("/opinionSystem/v1/auth", authRoutes)
+    app.use("/opinionSystem/v1/auth", authRoutes);
+    app.use("/opinionSystem/v1/user", userRoutes);
 }
 
 const conectarDB = async()=>{
