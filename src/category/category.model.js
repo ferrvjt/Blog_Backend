@@ -4,7 +4,7 @@ const Category = Schema({
     name: {
         type: String,
         required: [true, 'Name is required'],
-        unique: [true, "Name was registred yet"]
+        unique: [true,'Name was registred yet']
     },
     description: {
         type: String,
@@ -15,4 +15,4 @@ const Category = Schema({
     }
 });
 
-export default model("Category", Category)
+export default model('Category', Category)

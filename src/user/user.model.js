@@ -23,6 +23,11 @@ const User = Schema({
     profilePicture: {
         type: String
     },
+    role:{
+        type: String,
+        required: true,
+        enum: ["ADMIN_ROLE","USER_ROLE"]
+    },
     status:{
         type: Boolean,
         default: true
