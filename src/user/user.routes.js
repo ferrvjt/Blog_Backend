@@ -6,11 +6,11 @@ import { validarCampos } from "../middleware/validar-campos.js";
 import { uploadProfilePicture } from "../middleware/multer-upload.js";
 import {validarJWT} from "../middleware/validar-jwt.js";
 
-const router = Router();
+const rt = Router();
 
-router.get("/",getUsers);
+rt.get("/",getUsers);
 
-router.get(
+rt.get(
     "/:id", 
     [
         check("id","No es un ID valido").isMongoId(),
@@ -20,7 +20,7 @@ router.get(
     getUserById
 );
 
-router.put(
+rt.put(
     '/:id',
     uploadProfilePicture.single('profilePicture'),
     [
@@ -32,4 +32,4 @@ router.put(
     updateUser
 );
 
-export default router;
+export default rt;

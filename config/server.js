@@ -8,6 +8,7 @@ import {dbConnection} from './mongo.js';
 import limiter from '../src/middleware/validar-cant-peticiones.js';
 import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/user/user.routes.js'
+import catRoutes from '../src/category/category.routes.js'
 
 const middlewares = (app)=>{
     app.use(express.urlencoded({extended:false}));
@@ -21,6 +22,7 @@ const middlewares = (app)=>{
 const routes = (app) =>{
     app.use("/opinionSystem/v1/auth", authRoutes);
     app.use("/opinionSystem/v1/user", userRoutes);
+    app.use("/opinionSystem/v1/cat", catRoutes);
 }
 
 const conectarDB = async()=>{
