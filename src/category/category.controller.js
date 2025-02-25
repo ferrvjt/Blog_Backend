@@ -63,9 +63,7 @@ export const createCat = async(req, res) => {
 
         return res.status(201).json({
             message: "Category registred succesfully",
-            category:{
-                cat: cat
-            }
+            category: cat       
         })
     } catch (error) {
         console.log(error);
@@ -75,7 +73,7 @@ export const createCat = async(req, res) => {
             error: error.message
         });
     }
-}
+}   
 export const updateCat = async(req,res = response)=>{
     try {
         

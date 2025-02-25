@@ -6,14 +6,14 @@ const Opinion = Schema({
         ref: 'user',
         required: [true, 'User is required']
     },
-    category:{
+    cat:{
         type: Schema.Types.ObjectId,
         ref: 'category',
         required:[true, 'Must have a category']
     },
     hdr:{
         type: String, 
-        required: [true, 'Must have a header']
+        required: [true, 'Must have a header']  
     },
     opn:{
         type: String, 
@@ -33,3 +33,5 @@ const Opinion = Schema({
         default: true
     },
 })
+
+export default model("Opinion", Opinion)
