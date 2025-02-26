@@ -10,6 +10,7 @@ import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/user/user.routes.js'
 import catRoutes from '../src/category/category.routes.js'
 import opRoutes from '../src/opinion/opinion.routes.js'
+import { createDefaultCategories } from '../src/category/category.controller.js';
 
 const middlewares = (app)=>{
     app.use(express.urlencoded({extended:false}));
@@ -42,12 +43,13 @@ export const initServer= async()=>{
     const port = process.env.PORT || 3005;
 
     try {
-        app.listen(port);
         middlewares(app);
         conectarDB();
         routes(app);
+        app.listen(port);
+        createDefaultCategories();
         console.log(`Server running on port ${port}`)
     } catch (e) {
-        console.log(`Server init failed: ${e}`)
+        console.log(`Server init failed: ${e.message}`)
     }
 }

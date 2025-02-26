@@ -19,10 +19,6 @@ const Opinion = Schema({
         type: String, 
         required: [true, 'Must have a body']
     },
-    likes:{
-        type: Number,
-        min: [0, 'Must be a real number']
-    },
     comments:[{
         type: Schema.Types.ObjectId,
         ref: 'user',

@@ -3,6 +3,7 @@ import  {check} from "express-validator";
 import { getCat,getCatById, createCat,updateCat } from "./category.controller.js";
 import { validarJWT } from "../middleware/validar-jwt.js";
 import { validarCampos } from "../middleware/validar-campos.js";
+import { tieneRole } from "../middleware/validar-role.js";
 
 const rt = new Router();
 

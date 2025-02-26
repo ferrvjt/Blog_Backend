@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { saveOp, updateOp, getOp,searchOp,deletOp } from "./opinion.controller.js";
+import { saveOp, updateOp, getOp,searchOp,deletOp, addComment, editComment, deleteComment } from "./opinion.controller.js";
 import {validarJWT} from '../middleware/validar-jwt.js';
 import {validarCampos} from '../middleware/validar-campos.js'
-
 
 const rt = Router();
 
@@ -48,6 +47,37 @@ rt.delete(
         validarCampos
     ],
     deletOp
+)
+
+//---------------- Comments--------------------------
+rt.post(
+    '/:id/',
+    [
+        validarJWT,
+        check("id","No es un id válido").isMongoId(),
+        validarCampos
+    ],
+    addComment
+)
+
+rt.put(
+    '/:id/' ,
+    [
+        validarJWT,
+        check("id","No es un id válido").isMongoId(),
+        validarCampos
+    ],
+    editComment
+)
+
+rt.delete(
+    '/:id/' ,
+    [
+        validarJWT,
+        check("id","No es un id válido").isMongoId(),
+        validarCampos
+    ],
+    deleteComment
 )
 
 export default rt;

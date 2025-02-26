@@ -155,3 +155,95 @@ export const updateOp = async (req,res) => {
         })
     }
 }
+
+//------------- Comments -------------------------------
+export const addComment = async (req, res) => {
+    try {
+        const { opinionId } = req.params;
+        const { user, bodyComment } = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(opinionId) || !mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ success: false, msg: "Invalid ID format" });
+        }
+        const opinion = await Opinion.findById(opinionId);
+        if (!opinion) {
+            return res.status(404).json({ success: false, msg: "Opinion not found" });
+        }
+
+        opinion.comments.push({ user, bodyComment });
+        await opinion.save();
+
+        return res.status(200).json({
+            success: true,
+            msg: "Comment added successfully",
+            opinion
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: "Error adding comment",
+            error: error.message
+        });
+    }
+};
+
+export const editComment = async (req, res) => {
+    try {
+        const { opinionId, commentId } = req.params;
+        const { bodyComment } = req.body;
+
+        const opinion = await Opinion.findById(opinionId);
+        if (!opinion) {
+            return res.status(404).json({ success: false, msg: "Opinion not found" });
+        }
+
+        const comment = opinion.comments.id(commentId);
+        if (!comment) {
+            return res.status(404).json({ success: false, msg: "Comment not found" });
+        }
+
+        comment.bodyComment = bodyComment;
+        await opinion.save();
+
+        return res.status(200).json({
+            success: true,
+            msg: "Comment updated successfully",
+            opinion
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: "Error updating comment",
+            error: error.message
+        });
+    }
+};
+
+export const deleteComment = async (req, res) => {
+    try {
+        const { opinionId, commentId } = req.params;
+
+        const opinion = await Opinion.findById(opinionId);
+        if (!opinion) {
+            return res.status(404).json({ success: false, msg: "Opinion not found" });
+        }
+
+        opinion.comments = opinion.comments.filter(comment => comment._id.toString() !== commentId);
+        await opinion.save();
+
+        return res.status(200).json({
+            success: true,
+            msg: "Comment deleted successfully",
+            opinion
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            msg: "Error deleting comment",
+            error: error.message
+        });
+    }
+};
