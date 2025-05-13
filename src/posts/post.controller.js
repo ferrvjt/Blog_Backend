@@ -79,6 +79,40 @@ export const getOp = async (req, res) => {
     }
 };
 
+export const getOpByCategory = async (req, res) => {
+    const { catId } = req.params; // ID de la categoría en la URL
+    const { limite = 10, desde = 0 } = req.query;
+    const query = { status: true, cat: catId };
+
+    try {
+        const ops = await Post.find(query)
+            .skip(Number(desde))
+            .limit(Number(limite));
+
+        const cat = await CourseSchemma.findById(catId);
+
+        const opsWithCat = ops.map(op => ({
+            ...op.toObject(),
+            cat: cat ? cat.name : "Category not found"
+        }));
+
+        const total = await Post.countDocuments(query);
+
+        res.status(200).json({
+            success: true,
+            total,
+            ops: opsWithCat
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error getting opinions by category',
+            error: error.message
+        });
+    }
+};
+
+
 export const searchOp = async (req, res) => {
     const { id } = req.params;
 

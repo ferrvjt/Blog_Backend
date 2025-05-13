@@ -33,6 +33,15 @@ rt.get(
     searchOp
 )
 
+rt.get(
+    "/:catId",
+    [
+        check("id","No es un id válido").isMongoId(),
+        validarCampos
+    ],
+    searchOp
+)
+
 rt.delete(
     "/:id",
     [
