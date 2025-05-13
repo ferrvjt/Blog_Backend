@@ -6,11 +6,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import {dbConnection} from './mongo.js';
 import limiter from '../src/middleware/validar-cant-peticiones.js';
-import authRoutes from '../src/auth/auth.routes.js';
-import userRoutes from '../src/user/user.routes.js'
-import catRoutes from '../src/category/category.routes.js'
-import opRoutes from '../src/opinion/opinion.routes.js'
-import { createDefaultCategories } from '../src/category/category.controller.js';
+import courseRoutes from '../src/courses/course.routes.js'
+import postRoutes from '../src/posts/post.routes.js'
+import { createDefaultCourses } from '../src/courses/course.controller.js';
 
 const middlewares = (app)=>{
     app.use(express.urlencoded({extended:false}));
@@ -22,10 +20,8 @@ const middlewares = (app)=>{
 }
 
 const routes = (app) =>{
-    app.use("/opinionSystem/v1/auth", authRoutes);
-    app.use("/opinionSystem/v1/user", userRoutes);
-    app.use("/opinionSystem/v1/cat", catRoutes);
-    app.use("/opinionSystem/v1/op", opRoutes);
+    app.use("/Blog/v1/course", courseRoutes);
+    app.use("/Blog/v1/post", postRoutes);
 }
 
 const conectarDB = async()=>{
@@ -47,7 +43,7 @@ export const initServer= async()=>{
         conectarDB();
         routes(app);
         app.listen(port);
-        createDefaultCategories();
+        createDefaultCourses();
         console.log(`Server running on port ${port}`)
     } catch (e) {
         console.log(`Server init failed: ${e.message}`)

@@ -1,15 +1,16 @@
 import { request, response } from "express";
-import Category from "./category.model.js";
-import Opinion from "../opinion/opinion.model.js"
+import Course from "./course.model.js";
+import Post from "../posts/post.model.js"
 
-export const getCat = async (req = request, res = response) => {
+// No se usara este metodo en el frontend
+export const getCourse = async (req = request, res = response) => {
     try {   
         const {limite = 10, desde = 0} = req.query;
         const query = {status : true};
 
         const [total, category] = await Promise.all([
-            Category.countDocuments(query),
-            Category.find(query)
+            Course.countDocuments(query),
+            Course.find(query)
                 .skip(Number(desde))
                 .limit(Number(limite))
         ])
@@ -28,11 +29,14 @@ export const getCat = async (req = request, res = response) => {
     }
 }
 
-export const getCatById = async(req,res)=>{
+export const getCourseByName = async(req,res)=>{
     try {
-        const {id} = req.params;
+        const {name} = req.params;
 
-        const cat = await Category.findById(id);
+          // Búsqueda por nombre que comienza con la cadena ingresada, sin importar mayúsculas/minúsculas
+          const cats = await Course.find({
+            name: { $regex: `^${name}`, $options: 'i' }
+        });
 
         if(!cat){
             return res.status(404).json({
@@ -55,12 +59,13 @@ export const getCatById = async(req,res)=>{
     }
 }
 
-export const createCat = async(req, res) => {
+// No se usara este metodo en el frontend
+export const createCourses = async(req, res) => {
 
     try {
         const data = req.body;
         
-        const cat = await Category.create({...data})
+        const cat = await Course.create({...data})
 
         return res.status(201).json({
             message: "Category registred succesfully",
@@ -75,13 +80,15 @@ export const createCat = async(req, res) => {
         });
     }
 }   
-export const updateCat = async(req,res = response)=>{
+
+// No se usara este metodo en el frontend
+export const updateCourse = async(req,res = response)=>{
     try {
         
         const {id} = req.params;
         const { ...data}= req.body;
 
-        const cat = await Category.findByIdAndUpdate(id, data, {new: true});
+        const cat = await Course.findByIdAndUpdate(id, data, {new: true});
 
         res.status(200).json({
             success: true,
@@ -98,28 +105,29 @@ export const updateCat = async(req,res = response)=>{
     }
 }
 
-export const createDefaultCategories = async () => {
+export const createDefaultCourses = async () => {
     try {
-        const defaultCategories = [
-            { name: "world", description: "Categoría por defecto", status: true },
-            { name: "fyp", description: "Categoría recomendada", status: true }
+        const defaultCourses = [
+            { name: "Tecnologia", description: "Curso de teoria sobre los cimientos tecnicos", status: true },
+            { name: "Taller", description: "Curso de aplicacion de los conociemientos tecnicos", status: true },
+            { name: "Practica Supervisada", description: "Curso de uso practico y diario de los conocimientos tecnicos", status: true }
         ];
 
         // Verificar si ya existen estas categorías
-        const existingCategories = await Category.find({ name: { $in: ["world", "fyp"] } });
+        const existingCourses = await Course.find({ name: { $in: ["Tecnologia", "Taller","Practica Supervisada"] } });
 
-        const existingNames = existingCategories.map(cat => cat.name);
-        const categoriesToCreate = defaultCategories.filter(cat => !existingNames.includes(cat.name));
+        const existingNames = existingCourses.map(cat => cat.name);
+        const coursesToCreate = defaultCourses.filter(cat => !existingNames.includes(cat.name));
 
         // Solo crear si faltan categorías
-        if (categoriesToCreate.length > 0) {
-            const newCategories = await Category.insertMany(categoriesToCreate);
+        if (coursesToCreate.length > 0) {
+            const newCategories = await Course.insertMany(coursesToCreate);
             console.log("Default categories created:", newCategories);
             return newCategories;
         }
 
         console.log("Mongo DB | Default categories already exist.");
-        return existingCategories;
+        return existingCourses;
 
     } catch (error) {
         return  res.status({
@@ -129,13 +137,14 @@ export const createDefaultCategories = async () => {
     }
 };
 
+// No se usara este metodo en el frontend
 // Reasignar comentarios antes de desactivar una categoría
 export const safeDeleteCat = async (req, res) => {
     try {
         const { id } = req.params;
 
         // Verificar si la categoría existe
-        const categoryToDelete = await Category.findById(id);
+        const categoryToDelete = await Course.findById(id);
         if (!categoryToDelete) {
             return res.status(404).json({
                 success: false,
@@ -144,18 +153,18 @@ export const safeDeleteCat = async (req, res) => {
         }
 
         // Obtener categorías por defecto
-        let defaultCategories = await Category.find({ name: { $in: ["world", "fyp"] } });
+        let defaultCategories = await Course.find({ name: { $in: ["world", "fyp"] } });
 
         if (defaultCategories.length < 2) {
             await createDefaultCategories();
-            defaultCategories = await Category.find({ name: { $in: ["world", "fyp"] } });
+            defaultCategories = await Course.find({ name: { $in: ["world", "fyp"] } });
         }
 
         // Escoger una categoría por defecto a la cual reasignar los comentarios
         const defaultCategory = defaultCategories[0]._id;
 
         // Actualizar todas las opiniones que tienen la categoría a eliminar
-        await Opinion.updateMany(
+        await Post.updateMany(
             { cat: id },
             { cat: defaultCategory }
         );

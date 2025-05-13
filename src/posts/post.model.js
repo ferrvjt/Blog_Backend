@@ -1,9 +1,8 @@
 import { Schema, model } from "mongoose";
 
-const Opinion = Schema({
+const PostSchema = Schema({
     user:{
-        type: Schema.Types.ObjectId,
-        ref: 'user',
+        type: String,
         required: [true, 'User is required']
     },
     cat:{
@@ -15,19 +14,32 @@ const Opinion = Schema({
         type: String, 
         required: [true, 'Must have a header']  
     },
-    opn:{
+    body:{
         type: String, 
         required: [true, 'Must have a body']
     },
     comments:[{
-        type: Schema.Types.ObjectId,
-        ref: 'user',
-        bodyComment: String
+        user: {
+            type: String,
+            required: [true, 'User name is required']
+        },
+        bodyComment: {
+            type: String,
+            required: [true, 'Comment body is required']
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        }
     }],
+    date:{
+        type:Date,
+        default: Date.now
+    },
     status:{
         type: Boolean,
         default: true
     },
 })
 
-export default model("Opinion", Opinion)
+export default model("Post", PostSchema)

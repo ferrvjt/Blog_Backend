@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { saveOp, updateOp, getOp,searchOp,deletOp, addComment, editComment, deleteComment } from "./opinion.controller.js";
-import {validarJWT} from '../middleware/validar-jwt.js';
+import { saveOp, updateOp, getOp,searchOp,deletOp, addComment, editComment, deleteComment } from "./post.controller.js";
 import {validarCampos} from '../middleware/validar-campos.js'
 
 const rt = Router();
@@ -9,8 +8,6 @@ const rt = Router();
 rt.post(
     "/",
     [
-        validarJWT,
-        check('email','Este no es un correo valido').not().isEmpty(),
         validarCampos
     ],
     saveOp
@@ -19,9 +16,7 @@ rt.post(
 rt.put(
     "/:id",
     [
-        validarJWT,
         check("id","No es un id válido").isMongoId(),
-        check('email','Este no es un correo valido').optional(),
         validarCampos
     ],
     updateOp
@@ -32,7 +27,6 @@ rt.get("/", getOp)
 rt.get(
     "/:id",
     [
-        validarJWT,
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
@@ -42,7 +36,6 @@ rt.get(
 rt.delete(
     "/:id",
     [
-        validarJWT,
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
@@ -53,7 +46,6 @@ rt.delete(
 rt.post(
     '/:id/',
     [
-        validarJWT,
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
@@ -61,9 +53,8 @@ rt.post(
 )
 
 rt.put(
-    '/:id/' ,
+    '/:id/:commentId' ,
     [
-        validarJWT,
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
@@ -71,9 +62,8 @@ rt.put(
 )
 
 rt.delete(
-    '/:id/' ,
-    [
-        validarJWT,
+    '/:id/:commentId' ,
+    [ 
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],

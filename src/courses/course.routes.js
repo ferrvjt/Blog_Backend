@@ -1,9 +1,7 @@
 import { Router } from "express";
 import  {check} from "express-validator";
-import { getCat,getCatById, createCat,updateCat } from "./category.controller.js";
-import { validarJWT } from "../middleware/validar-jwt.js";
+import { getCourse,getCourseByName, createCourses,updateCourse } from "./course.controller.js";
 import { validarCampos } from "../middleware/validar-campos.js";
-import { tieneRole } from "../middleware/validar-role.js";
 
 const rt = new Router();
 
@@ -11,10 +9,9 @@ rt.post(
     '/',
     [
         validarCampos,
-        check("name","Must be a valid name").not().isEmpty(),
-        validarJWT
+        check("name","Must be a valid name").not().isEmpty()
     ],
-    createCat
+    createCourses
 )
 
 rt.put(
@@ -22,18 +19,17 @@ rt.put(
     [
         validarCampos,
         check("id","Must be a valid ID").isMongoId(),
-        check("name","Must be a valid name").not().isEmpty(),
-        validarJWT
+        check("name","Must be a valid name").not().isEmpty()
     ],
-    updateCat
+    updateCourse
 )
 
-rt.get('/',getCat)
+rt.get('/',getCourse)
 
 rt.get(
     '/:id',
     check("id","Must be a valid ID").isMongoId(),
-    getCatById
+    getCourseByName
 )
 
 export default rt;

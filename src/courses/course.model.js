@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const Category = Schema({
+const CourseSchemma = Schema({
     name: {
         type: String,
         required: [true, 'Name is required'],
@@ -15,4 +15,4 @@ const Category = Schema({
     }
 });
 
-export default model('Category', Category)
+export default model('Course', CourseSchemma)
