@@ -27,7 +27,7 @@ rt.put(
 rt.get('/',getCourse)
 
 rt.get(
-    '/:id',
+    '/:name',
     check("id","Must be a valid ID").isMongoId(),
     getCourseByName
 )

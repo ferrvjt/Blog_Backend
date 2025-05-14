@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { saveOp, updateOp, getOp,searchOp,deletOp, addComment, editComment, deleteComment } from "./post.controller.js";
+import { savePost, updatePost, getPost,searchPost,deletPost,getPostByCourse, addComment, editComment, deleteComment } from "./post.controller.js";
 import {validarCampos} from '../middleware/validar-campos.js'
 
 const rt = Router();
@@ -10,7 +10,7 @@ rt.post(
     [
         validarCampos
     ],
-    saveOp
+    savePost
 )
 
 rt.put(
@@ -19,10 +19,10 @@ rt.put(
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
-    updateOp
+    updatePost
 )
 
-rt.get("/", getOp)
+rt.get("/", getPost)
 
 rt.get(
     "/:id",
@@ -30,7 +30,7 @@ rt.get(
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
-    searchOp
+    searchPost
 )
 
 rt.get(
@@ -39,7 +39,7 @@ rt.get(
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
-    searchOp
+    getPostByCourse
 )
 
 rt.delete(
@@ -48,7 +48,7 @@ rt.delete(
         check("id","No es un id válido").isMongoId(),
         validarCampos
     ],
-    deletOp
+    deletPost
 )
 
 //---------------- Comments--------------------------

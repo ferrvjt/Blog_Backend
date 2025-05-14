@@ -4,7 +4,7 @@ import CourseSchemma from "../courses/course.model.js";
 
 // -------------------- Opiniones --------------------
 
-export const saveOp = async (req, res) => {
+export const savePost = async (req, res) => {
     try {
         const { user, cat, hdr, body } = req.body;
 
@@ -46,7 +46,7 @@ export const saveOp = async (req, res) => {
     }
 };
 
-export const getOp = async (req, res) => {
+export const getPost = async (req, res) => {
     const { limite = 10, desde = 0 } = req.query;
     const query = { status: true };
 
@@ -79,7 +79,7 @@ export const getOp = async (req, res) => {
     }
 };
 
-export const getOpByCategory = async (req, res) => {
+export const getPostByCourse = async (req, res) => {
     const { catId } = req.params; // ID de la categoría en la URL
     const { limite = 10, desde = 0 } = req.query;
     const query = { status: true, cat: catId };
@@ -113,7 +113,7 @@ export const getOpByCategory = async (req, res) => {
 };
 
 
-export const searchOp = async (req, res) => {
+export const searchPost = async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -121,7 +121,7 @@ export const searchOp = async (req, res) => {
         if (!op) {
             return res.status(404).json({
                 success: false,
-                message: 'Opinion not found'
+                message: 'Post not found'
             });
         }
 
@@ -131,19 +131,19 @@ export const searchOp = async (req, res) => {
             success: true,
             opinion: {
                 ...op.toObject(),
-                cat: cat ? cat.name : "Category not found"
+                cat: cat ? cat.name : "Course not found"
             }
         });
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Error searching opinion',
+            message: 'Error searching course',
             error: error.message
         });
     }
 };
 
-export const deletOp = async (req, res) => {
+export const deletPost = async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -162,7 +162,7 @@ export const deletOp = async (req, res) => {
     }
 };
 
-export const updateOp = async (req, res) => {
+export const updatePost = async (req, res) => {
     const { id } = req.params;
     const {...data } = req.body;
 

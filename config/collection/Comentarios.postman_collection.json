@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "5b9def9e-141a-441d-bd04-c1ba414121cb",
+		"name": "Comentarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37589631"
+	},
+	"item": [
+		{
+			"name": "Publicaciones",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addPost",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n    \"user\": \"Luis\",\r\n    \"cat\":\"68237a8ba340ada42d3c1661\",\r\n    \"hdr\":\"Dia de Partit\",\r\n    \"body\":\"Visca Barca\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3004/Blog/v1/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"Blog",
+								"v1",
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Curso",
+			"item": [
+				{
+					"name": "getCurso",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentarios",
+			"item": [
+				{
+					"name": "addComent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\":\"Ceferino\",\r\n    \"bodyComment\":\"La verdad es que me gusta el pene\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3004/Blog/v1/post/68237f1c82db006bb093fa99",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"Blog",
+								"v1",
+								"post",
+								"68237f1c82db006bb093fa99"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "putComent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n    \"user\": \"Luis\",\r\n    \"cat\":\"68237a8ba340ada42d3c1661\",\r\n    \"hdr\":\"Dia de Partit\",\r\n    \"body\":\"Visca Barca\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3004/Blog/v1/post/68237f1c82db006bb093fa99/6823860f342ba4918d5379b7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3004",
+							"path": [
+								"Blog",
+								"v1",
+								"post",
+								"68237f1c82db006bb093fa99",
+								"6823860f342ba4918d5379b7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteComment",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
