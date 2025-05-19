@@ -85,14 +85,14 @@ export const getPostByCourse = async (req, res) => {
     const query = { status: true, cat: catId };
 
     try {
-        const ops = await Post.find(query)
+        const posts = await Post.find(query)
             .skip(Number(desde))
             .limit(Number(limite));
 
         const cat = await CourseSchemma.findById(catId);
 
-        const opsWithCat = ops.map(op => ({
-            ...op.toObject(),
+        const postWithCourse = posts.map(post => ({
+            ...post.toObject(),
             cat: cat ? cat.name : "Category not found"
         }));
 
@@ -101,7 +101,7 @@ export const getPostByCourse = async (req, res) => {
         res.status(200).json({
             success: true,
             total,
-            ops: opsWithCat
+            posts: postWithCourse
         });
     } catch (error) {
         res.status(500).json({

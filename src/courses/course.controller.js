@@ -34,11 +34,11 @@ export const getCourseByName = async(req,res)=>{
         const {name} = req.params;
 
           // Búsqueda por nombre que comienza con la cadena ingresada, sin importar mayúsculas/minúsculas
-          const cats = await Course.find({
+          const course = await Course.find({
             name: { $regex: `^${name}`, $options: 'i' }
         });
 
-        if(!cat){
+        if(!course){
             return res.status(404).json({
                 success: false,
                 msg: 'Category not found'
@@ -47,7 +47,7 @@ export const getCourseByName = async(req,res)=>{
 
         res.status(200).json({
             success : true,
-            cat
+            course
         })
 
     } catch (error) {

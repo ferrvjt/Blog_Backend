@@ -34,7 +34,7 @@ rt.get(
 )
 
 rt.get(
-    "/:catId",
+    "/cat/:catId",
     [
         check("id","No es un id válido").isMongoId(),
         validarCampos
